@@ -1,27 +1,24 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
-
 $(function () {
     //sets variable for current day and sets that day to be the header of the page
-    
     var today = dayjs();
+    var currentHour = today.format('H');
     $('#currentDay').text(today.format('MMM D, YYYY'));
     $('.btn').on('click',function() {
         var scheduledEvent = $(this).siblings('.description').val()
         var eventTime = $(this).parent().attr('id')
         localStorage.setItem(eventTime, scheduledEvent) 
     })
-    var currentHour = today.format('h');
     for(i=0;i<=23;i++){
-        var listedHour = $('.root').children(i)
-        var listedTime = $('.root').children(i).attr('id')
-        if( listedTime < currentHour ){
-            listedHour.attr('time', 'past')
-        }else if( listedTime = currentHour ){
-            listedHour.attr('time', 'present')
-        }else{
-            listedHour.attr('time', 'future')
+        var listedTime = $('.root').children().eq(i).attr('id');
+        if(currentHour > listedTime){
+            $('.root').children().eq(i).attr('class', 'row time-block past')
+        }else if(listedTime === currentHour){
+            $('.root').children().eq(i).attr('class', 'row time-block present')
+        }else if(currentHour < listedTime){
+            $('.root').children().eq(i).attr('class', 'row time-block future')
         }
     }
     // TODO: Add code to apply the past, present, or future class to each time
