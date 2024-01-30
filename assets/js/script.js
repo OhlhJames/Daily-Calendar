@@ -11,17 +11,21 @@ $(function () {
         var newEventTime = $(this).parent().attr('id')
         localStorage.setItem(newEventTime, newEvent) 
     })
-    for(i=0;i<=23;i++){
+    for(i=0;i<=8;i++){
         var listedTime = $('.root').children().eq(i).attr('id');
-        if(currentHour > listedTime){
-            $('.root').children().eq(i).attr('class', 'row time-block past')
-            $('.root').children().eq(i).attr('time', 'past')
-        }else if(listedTime === currentHour){
-            $('.root').children().eq(i).attr('class', 'row time-block present')
-            $('.root').children().eq(i).attr('time', 'present')
-        }else if(currentHour < listedTime){
+        console.log(listedTime)
+        console.log(currentHour)
+        if(currentHour < listedTime){
             $('.root').children().eq(i).attr('class', 'row time-block future')
-            $('.root').children().eq(i).attr('time', 'future')
+            $('.root').children().eq(i).attr('data-time', 'future')
+        } 
+        if(listedTime === currentHour){
+            $('.root').children().eq(i).attr('class', 'row time-block present')
+            $('.root').children().eq(i).attr('data-time', 'present')
+        }
+        if (currentHour > listedTime) {
+            $('.root').children().eq(i).attr('class', 'row time-block past')
+            $('.root').children().eq(i).attr('data-time', 'past')
         }
     }
     // TODO: Add code to apply the past, present, or future class to each time
@@ -29,12 +33,16 @@ $(function () {
     // attribute of each time-block be used to conditionally add or remove the
     // past, present, and future classes? How can Day.js be used to get the
     // current hour in 24-hour time?
-    for(i = 9;i <= 17 ;i++){ 
-        var scheduledEvent = localStorage.getItem(i);
-        if($('.root').children().eq(i).prop('past')){
-            $('.root').children().eq((i-9)).children().eq(1).val('Event has passed')
+    for(i = 0;i <= 8 ;i++){ 
+        var timeJump = (i+9)
+        var scheduledEvent = localStorage.getItem(timeJump);
+        var element = $('.root').children().eq(i);
+        var timeChecker = element.data('time') 
+        
+        if( timeChecker === 'past' && scheduledEvent != null ){
+            $('.root').children().eq(i).children().eq(1).val('Event has passed')
         }else{
-            $('.root').children().eq((i-9)).children().eq(1).val(scheduledEvent)
+            $('.root').children().eq(i).children().eq(1).val(scheduledEvent)
         }
             
     }
