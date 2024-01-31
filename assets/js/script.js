@@ -7,6 +7,7 @@ $(function () {
     $('#currentDay').text(today.format('MMM D, YYYY'));
     //Adds functioanlity to the save button so that events can be added to the calender
     $('.btn').on('click',function() {
+        $('.confirmSave').text('Saved to LocalStorage ✅')
         var newEvent = $(this).siblings('.description').val()
         var newEventTime = $(this).parent().attr('id')
         localStorage.setItem(newEventTime, newEvent) 
